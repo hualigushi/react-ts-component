@@ -26,3 +26,66 @@ Components/
   Button/
     style.scss(组件单独的样式)
 ```
+
+## 图标库
+```
+@fortawesome/fontawesome-svg-core
+@fortawesome/free-solid-svg-icons
+@fortawesome/react-fontawesome
+```
+
+## 动画库
+```
+react-transition-group
+@types/react-transition-group
+```
+重点：**unmountOnExit**
+```
+import { CSSTransition } from 'react-transition-group'
+
+<CSSTransition 
+  in={menuOpen} 
+  timeout={300} 
+  unmountOnExit={true}
+  classNames="zoom-in-top" 
+  appear>
+  <ul className={subMenuClasses}>
+      {childrenComponent}
+  </ul>
+</CSSTransition>
+```
+
+```
+@mixin zoom-animation(
+    $direction: 'top',
+    $scaleStart: scaleY(0),
+    $scaleEnd: scaleY(1),
+    $origin: center top,
+  ) {
+    .zoom-in-#{$direction}-enter {
+      opacity: 0;
+      transform: $scaleStart;
+    }
+    .zoom-in-#{$direction}-enter-active {
+      opacity: 1;
+      transform: $scaleEnd;
+      transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms, opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
+      transform-origin: $origin
+    }
+    .zoom-in-#{$direction}-exit {
+      opacity: 1;
+    }
+    .zoom-in-#{$direction}-exit-active {
+      opacity: 0;
+      transform: $scaleStart;
+      transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms, opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
+      transform-origin: $origin;
+    }
+  }
+
+@include zoom-animation("top", scaleY(0), scaleY(1), center top);
+@include zoom-animation("left", scale(0.45, 0.45), scale(1, 1), top left);
+@include zoom-animation("right", scale(0.45, 0.45), scale(1, 1), top right);
+@include zoom-animation("bottom", scaleY(0), scaleY(1), center bottom);
+
+```
