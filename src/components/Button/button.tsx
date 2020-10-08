@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{FC,ButtonHTMLAttributes,AnchorHTMLAttributes} from 'react'
 import classnames from 'classnames'
 
 export type ButtonSize = 'lg' | 'sm'
@@ -6,18 +6,25 @@ export type ButtonType = 'primary'| 'default'| 'danger'| 'link'
 
 interface BaseButtonProps {
     className?: string;
+    /**设置 Button 的禁用 */
     disabled?: boolean;
+    /**设置 Button 的尺寸 */
     size?: ButtonSize;
+    /**设置 Button 的类型 */
     btnType?: ButtonType;
     children: React.ReactNode;
     href?: string
 }
 
-type NativeBttonProps = BaseButtonProps & React.ButtonHTMLAttributes<HTMLElement>
-type AnchorButtonProps = BaseButtonProps & React.AnchorHTMLAttributes<HTMLElement>
+type NativeBttonProps = BaseButtonProps & ButtonHTMLAttributes<HTMLElement>
+type AnchorButtonProps = BaseButtonProps & AnchorHTMLAttributes<HTMLElement>
 export type ButtonProps = Partial<NativeBttonProps & AnchorButtonProps>
 
-const Button: React.FC<ButtonProps> = (props) => {
+/**
+ * 这是第一个 Button 组件
+ *  
+ */
+export const Button: FC<ButtonProps> = (props) => {
     const {
         btnType,
         className,
