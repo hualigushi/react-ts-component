@@ -1,6 +1,12 @@
 ## 创建项目
 `npx create-react-app ts-react --typescript`
 
+## 启动项目
+`npm run start`
+`npm run storybook`
+`npm run test`
+`npm test -- -t "auto"`
+
 ## 开启es-lint
 
 根目录下创建 `.vscode/setting.json`
@@ -89,3 +95,32 @@ import { CSSTransition } from 'react-transition-group'
 @include zoom-animation("bottom", scaleY(0), scaleY(1), center bottom);
 
 ```
+
+## Storybook
+`npx -p @storybook/cli sb init`
+
+文档
+`npm i -D @storybook/addon-info`
+`npm i --save @types/storybook__addon-info`
+
+## Input 组件非受控组件处理
+```js
+const fixControlledValue = (value: any) => {
+    if (typeof value === 'undefined' || value === null) {
+        return ''
+    }
+    return value
+
+}
+
+if ('value' in props) {
+    delete restProps.defaultValue
+    restProps.value = fixControlledValue(props.value)
+}
+```
+
+## 自定义hook防抖
+
+## 自定义hook键盘时间
+
+## keyCode' is deprecated
