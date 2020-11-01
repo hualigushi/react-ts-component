@@ -6,6 +6,7 @@ import MenuItem from './components/Menu/menuItem'
 import SubMenu from './components/Menu/subMenu'
 import Transition from './components/Transition/transition'
 import Button from './components/Button/button'
+import Icon from './components/Icon/icon';
 
 library.add(fas)
 function App() {
@@ -27,6 +28,8 @@ function App() {
         <MenuItem>
           cool link4</MenuItem>
       </Menu>
+
+      <Icon icon="spinner" spin />
     </div>
   );
 }

@@ -124,3 +124,11 @@ if ('value' in props) {
 ## 自定义hook键盘时间
 
 ## keyCode' is deprecated
+
+## setState functional update 使用Object.is算法，可使用自定义方法
+
+## 元素拖动事件 onDragOver onDragLeave onDrop
+
+## 单元测试 异步方法  axios库测试 拖动测试
+
+## jest 底层依赖dom, 目前不支持 拖动  fireEvent.drop
