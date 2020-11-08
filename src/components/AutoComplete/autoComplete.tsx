@@ -2,9 +2,9 @@ import React, { FC, useState, ChangeEvent, ReactElement, KeyboardEvent, useEffec
 import classnames from 'classnames'
 import Input, { InputProps } from '../Input/input'
 import Icon from '../Icon/icon'
-import Transition from '../Transition/transition'
 import useDebounce from '../../hooks/useDebounce'
 import useClickOutside from '../../hooks/useClickOutside'
+import Transition from '../Transition/transition'
 
 interface DataSourceOject {
     value: string;
@@ -109,12 +109,12 @@ const AutoComplete: FC<AutoCompleteProps> = (props) => {
 
     const generateDropdown = () => {
         return (
-            // <Transition
-            //     in={showDropdown || loading}
-            //     animation="zoom-in-top"
-            //     timeout={300}
-            //     onExited={() => { setSuggestions([]) }}
-            // >
+            <Transition
+                in={showDropdown || loading}
+                animation="zoom-in-top"
+                timeout={300}
+                onExited={() => { setSuggestions([]) }}
+            >
                 <ul className="money-suggestion-list">
                     {
                         loading && <div className="suggstions-loading-icon">
@@ -134,7 +134,7 @@ const AutoComplete: FC<AutoCompleteProps> = (props) => {
                         })
                     }
                 </ul>
-            // </Transition>
+            </Transition>
         )
     }
     return (

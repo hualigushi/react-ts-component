@@ -4,8 +4,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import Menu from './components/Menu/menu'
 import MenuItem from './components/Menu/menuItem'
 import SubMenu from './components/Menu/subMenu'
-import Transition from './components/Transition/transition'
-import Button from './components/Button/button'
 import Icon from './components/Icon/icon';
 
 library.add(fas)

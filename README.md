@@ -120,15 +120,202 @@ if ('value' in props) {
 ```
 
 ## 自定义hook防抖
+```js
+import { useEffect, useState } from 'react'
+
+function useDebounce(value: any, delay = 300) {
+    const [debounceValue, setDebounceValue] = useState(value)
+    useEffect(() => {
+        const handler = window.setTimeout(() => {
+            setDebounceValue(value)
+        }, delay)
+        return () => {
+            clearTimeout(handler)
+        }
+    }, [value, delay])
+    return debounceValue
+}
+
+export default useDebounce
+```
 
 ## 自定义hook键盘时间
+```js
+import { RefObject, useEffect } from "react";
 
-## keyCode' is deprecated
+function useClickOutside(ref: RefObject<HTMLElement>, handler: Function) {
+    useEffect(() => {
+        const listener = (event: MouseEvent) => {
+            if (!ref.current || ref.current?.contains(event.target as HTMLElement)) {
+                return
+            }
+            handler(event)
+        }
+        document.addEventListener('click', listener)
+        return () => {
+            document.removeEventListener('click', listener)
+        }
+    }, [ref, handler])
+}
 
-## setState functional update 使用Object.is算法，可使用自定义方法
+export default useClickOutside
+```
+
+## hooks useState functional update 使用Object.is算法，可使用自定义方法更新值
 
 ## 元素拖动事件 onDragOver onDragLeave onDrop
 
-## 单元测试 异步方法  axios库测试 拖动测试
+## 组件库模块打包，打包成ES6 modules
 
-## jest 底层依赖dom, 目前不支持 拖动  fireEvent.drop
+1. 创建组件库入口文件, 导入所有组件
+
+```js
+src/components/Button/index.tsx
+
+import Button from './button'
+export default Button 
+```
+
+
+```js
+src/index.tsx
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+library.add(fas)
+
+export { default as Button } from './components/Button'
+export { default as Menu } from './components/Menu'
+export { default as AutoComplete } from './components/AutoComplete'
+export { default as Icon } from './components/Icon'
+export { default as Input } from './components/Input'
+export { default as Progress } from './components/Progress'
+export { default as Transition } from './components/Transition'
+export { default as Upload } from './components/Upload'
+```
+
+2. tsconfig.build.json 专门用于模块打包
+tsc将tsx文件转成js文件
+
+```
+{
+    "compilerOptions": {
+      "outDir": "dist", // 编译好的文件存放的位置
+      "module": "esnext",
+      "target": "es5", // 编译好的文件符合什么标准
+      "declaration": true, // 为每个ts文件生成 .d.ts文件
+      "jsx": "react",
+      "moduleResolution":"Node",
+      "allowSyntheticDefaultImports": true,
+    },
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "src/**/*.test.tsx",
+      "src/**/*.stories.tsx",
+      "src/setupTests.ts",
+    ]
+  }
+```
+
+3. 打包脚本
+
+```
+package.json
+
+scripts: {
+ "clean": "rimraf ./dist",
+ "build": "npm run clean && npm run build-ts && npm run build-css",
+ "build-ts": "tsc -p tsconfig.build.json",
+ "build-css": "node-sass ./src/styles/index.scss ./dist/index.css",
+}
+```
+
+## 发布组件库到npm
+
+```
+package.json
+
+{
+  "name": "vikingship",
+  "version": "0.1.4",
+  "description": "React components library",
+  "author": "Money",
+  "private": false,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "Component",
+    "UI",
+    "React"
+  ],
+  "homepage": "http://money.xyz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vikingmute/vikingship"
+  },
+  "files": [
+    "dist"
+  ],
+  scripts:{
+    "prepublishOnly": "npm run test:nowatch && npm run lint && npm run build"
+  }
+}
+```
+发布命令   `npm publish`
+
+## 核心依赖库声明
+
+```
+package.json
+
+"peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+```
+
+## 保证代码质量：发布和commit前检查
+
+`npm install husky -D`
+
+```
+package.json
+
+"scripts":{
+  "lint": "eslint --ext js,ts,tsx src --max-warnings 5",
+  "test:nowatch": "cross-env CI=true react-scripts test",
+  "prepublishOnly": "npm run test:nowatch && npm run lint && npm run build"
+},
+"husky": {
+    "hooks": {
+      "pre-commit": "npm run test:nowatch && npm run lint"
+    }
+  },
+```
+
+## 使用storybook生成静态文档页面
+
+1. 新建欢迎页 `src/welcome.stories.tsx`
+
+2. 设置欢迎页为默认页
+
+```
+.storybook/preview.tsx
+
+const loaderFn = () => {
+  const allExports = [require('../src/welcome.stories.tsx')];
+  const req = require.context('../src/components', true, /\.stories\.tsx$/);
+  req.keys().forEach(fname => allExports.push(req(fname)));
+  return allExports;
+};
+
+
+// automatically import all files ending in *.stories.js
+configure(loaderFn, module);
+```
+
+3. 运行命令 `build-storybook`
