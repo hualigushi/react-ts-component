@@ -3,8 +3,11 @@
 
 ## 启动项目
 `npm run start`
+
 `npm run storybook`
+
 `npm run test`
+
 `npm test -- -t "auto"`
 
 ## 开启es-lint
@@ -101,6 +104,7 @@ import { CSSTransition } from 'react-transition-group'
 
 文档
 `npm i -D @storybook/addon-info`
+
 `npm i --save @types/storybook__addon-info`
 
 ## Input 组件非受控组件处理
@@ -139,7 +143,7 @@ function useDebounce(value: any, delay = 300) {
 export default useDebounce
 ```
 
-## 自定义hook键盘时间
+## 自定义hook键盘事件
 ```js
 import { RefObject, useEffect } from "react";
 
@@ -195,6 +199,7 @@ export { default as Upload } from './components/Upload'
 ```
 
 2. tsconfig.build.json 专门用于模块打包
+
 tsc将tsx文件转成js文件
 
 ```
